@@ -11,24 +11,21 @@ sequenceDiagram
     Alice->>Resource: read version
     Resource-->>Alice: v1
 
-    Alice->>Resource: uncommitted changes
+    Note over Alice: uncommitted changes
 
-    Bob->>Resource: read version V1
+    Bob->>Resource: read version v1
     Resource-->>Bob: v1
 
-    Bob->>Resource: uncommitted changes
+    Note over Bob: uncommitted changes
 
     Alice->>Resource: CAS: if version==v1 then set version=v2 and commit
-    Resource-->>Alice: CAS success
+    Resource-->>Alice: commit success
     Note right of Resource: version = v2
 
     Bob->>Resource: CAS: if version==v1 then set version=v2 and commit
-    Resource-->>Bob: CAS failed (Optimistic Lock Conflict)
+    Resource-->>Bob: commit failed (Optimistic Lock Conflict)
 
-    Bob->>Resource: rollback
-    Resource-->>Bob: rollback done
-
-    Bob->>Resource: retry...
+    Note over Bob: transaction rolled back and retry...
 
 ```
 
